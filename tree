@@ -20,9 +20,9 @@ devide data
 defaultdict(<type 'int'>, {1: 32.0, 2: 32.0, 3: 29.0, 4: 32.0})
 [1, 2, 3, 4]
 new decision tree
-All same data no more branches for len 32
+All same data no more branches for len  32 noauto
 new decision tree
-All same data no more branches for len 32
+All same data no more branches for len  32 noauto
 new decision tree
 [1, 3, 4, 5]
 best attr1
@@ -51,9 +51,9 @@ devide data
 defaultdict(<type 'int'>, {1: 2.0, 2: 2.0, 3: 2.0, 4: 2.0})
 [1, 2, 3, 4]
 new decision tree
-All same data no more branches for len 2
+All same data no more branches for len  2 auto
 new decision tree
-All same data no more branches for len 2
+All same data no more branches for len  2 auto
 new decision tree
 [4]
 best attr4
@@ -64,13 +64,15 @@ devide data
 defaultdict(<type 'int'>, {1: 1.0, 2: 1.0})
 [1, 2]
 new decision tree
+All same data no more branches for len  1 noauto
 new decision tree
+All same data no more branches for len  1 auto
 new decision tree
-All same data no more branches for len 2
+All same data no more branches for len  2 noauto
 new decision tree
-All same data no more branches for len 5
+All same data no more branches for len  5 noauto
 new decision tree
-All same data no more branches for len 16
+All same data no more branches for len  16 noauto
 new decision tree
 [1, 3, 4, 5]
 best attr1
@@ -90,14 +92,46 @@ devide data
 defaultdict(<type 'int'>, {1: 4.0, 2: 4.0, 3: 4.0, 4: 4.0})
 [1, 2, 3, 4]
 new decision tree
-All same data no more branches for len 4
+All same data no more branches for len  4 auto
 new decision tree
-All same data no more branches for len 4
+All same data no more branches for len  4 auto
 new decision tree
-All same data no more branches for len 4
+All same data no more branches for len  4 auto
 new decision tree
-All same data no more branches for len 4
+All same data no more branches for len  4 noauto
 new decision tree
-All same data no more branches for len 16
+All same data no more branches for len  16 noauto
 new decision tree
-All same data no more branches for len 128
+All same data no more branches for len  128 auto
+=======Decision tree======
+
+     Atrribute  visibility
+     visibility = 1 ====> 
+         Atrribute  error
+         error = 1 ====> noauto
+         error = 2 ====> noauto
+         error = 3 ====> 
+             Atrribute  stability
+             stability = 1 ====> 
+                 Atrribute  sing
+                 sing = 1 ====> 
+                     Atrribute  magnitude
+                     magnitude = 1 ====> auto
+                     magnitude = 2 ====> auto
+                     magnitude = 3 ====> 
+                         Atrribute  wind
+                         wind = 1 ====> noauto
+                         wind = 2 ====> auto
+                     magnitude = 4 ====> noauto
+                 sing = 2 ====> noauto
+             stability = 2 ====> noauto
+         error = 4 ====> 
+             Atrribute  stability
+             stability = 1 ====> 
+                 Atrribute  magnitude
+                 magnitude = 1 ====> auto
+                 magnitude = 2 ====> auto
+                 magnitude = 3 ====> auto
+                 magnitude = 4 ====> noauto
+             stability = 2 ====> noauto
+     visibility = 2 ====> auto

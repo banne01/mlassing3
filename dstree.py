@@ -3,9 +3,10 @@ import math
 from collections import defaultdict
 from copy import deepcopy
 DATA_FILE =  "shuttle_ext_unique.dat"
-attributes = "auto stability error sing wind magnitude visibility"
+attributes  = "auto stability error sing wind magnitude visibility"
+attrlist = attributes.split()
 targetname = "auto"
-
+decision_values = ("noauto auto").split()
 class dstree:
 	def __init__(self):
 		self.attrname = attributes.split()
@@ -103,18 +104,19 @@ class dstree:
 		#	 test2 If not attrbute left to branch upon
 		# no data left
 		print 'new decision tree'
-		if len(data) == 0  or len(attridx_list) == 0:
-			return treenode(None,None)
+		if len(data) == 0 : 
+			print "No data or attribute left"
+			return treenode(None,None,None)
 		# same class all means entory 0.0		
 		elif (dstree.entrory_calculate(data,targetidx) == 0.0):
-			print 'All same data no more branches for len ' + str(len(data))
-			return treenode(None,None) 
+			print 'All same data no more branches for len ',(len(data)),decision_values[data[0][targetidx]-1]
+			return treenode(None,None,decision_values[data[0][targetidx]-1]) 
  		else:
 			best_attr_index =dstree.choose_best_attr(data,attridx_list,targetidx)
 			new_attr_list = deepcopy(attridx_list)
 			new_attr_list.remove(best_attr_index)
 			print new_attr_list
-			tnode = treenode(best_attr_index,attributes[best_attr_index])
+			tnode = treenode(best_attr_index,attrlist[best_attr_index])
 			new_data_map = dstree.divide_data(data,best_attr_index)
 			print new_data_map.keys()
 			for  att_value in new_data_map.keys():
@@ -123,25 +125,36 @@ class dstree:
 		return tnode
 		
 class treenode:
-	def __init__(self,attrname=None,attrindex=None):
+	def __init__(self,attrindex=None,attrname=None,decision=None):
 		#attribute name
 		self.attrname = attrname
 		self.attrindex = attrindex
+		self.decision = decision
 		# branch dictionary
 		self.branches = {}
 
 	def addchild(self,attrval,child):
 		self.branches[attrval]= child
 	
-	def printtree(self):
-		print  self.atrrname
-		for v,child in self.brnach.item():
-			print "\n \t " + v
-			child.printtree()
+	def printtree(self,tab):
+		if(self.attrname == None and  self.attrindex == None):
+			if (self.decision != None):
+				print self.decision
+			return
+		print '\n'+' '*4*tab,'Atrribute ',self.attrname
+		#if( self.attrindex):
+			#print  self.attrname
+		#if( self.attrname):
+			#print self.attrindex
+		for v,child in self.branches.items():
+			print  ' '*4*tab, self.attrname, '=', v, '====>', 
+			child.printtree(tab+1)
 
 '''start here Main'''
 if __name__ == "__main__":
 	print "Hello"	
 	dtobj = dstree()	
 	#dstree.choose_best_attr(dtobj.data,dtobj.attrindex,dtobj.targetindex)
-	dstree.create_decision_tree(dtobj.data,dtobj.attrindex,dtobj.targetindex)	
+	tree = dstree.create_decision_tree(dtobj.data,dtobj.attrindex,dtobj.targetindex)
+	print "=======Decision tree======"
+	tree.printtree(1)
