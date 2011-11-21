@@ -1,0 +1,103 @@
+Hello
+[1, 2, 3, 4, 5, 6]
+0
+new decision tree
+[1, 2, 3, 4, 5, 6]
+best attr6
+[1, 2, 3, 4, 5]
+devide data
+253
+6
+defaultdict(<type 'int'>, {1: 125.0, 2: 128.0})
+[1, 2]
+new decision tree
+[1, 2, 3, 4, 5]
+best attr2
+[1, 3, 4, 5]
+devide data
+125
+2
+defaultdict(<type 'int'>, {1: 32.0, 2: 32.0, 3: 29.0, 4: 32.0})
+[1, 2, 3, 4]
+new decision tree
+All same data no more branches for len 32
+new decision tree
+All same data no more branches for len 32
+new decision tree
+[1, 3, 4, 5]
+best attr1
+[3, 4, 5]
+devide data
+29
+1
+defaultdict(<type 'int'>, {1: 13.0, 2: 16.0})
+[1, 2]
+new decision tree
+[3, 4, 5]
+best attr3
+[4, 5]
+devide data
+13
+3
+defaultdict(<type 'int'>, {1: 8.0, 2: 5.0})
+[1, 2]
+new decision tree
+[4, 5]
+best attr5
+[4]
+devide data
+8
+5
+defaultdict(<type 'int'>, {1: 2.0, 2: 2.0, 3: 2.0, 4: 2.0})
+[1, 2, 3, 4]
+new decision tree
+All same data no more branches for len 2
+new decision tree
+All same data no more branches for len 2
+new decision tree
+[4]
+best attr4
+[]
+devide data
+2
+4
+defaultdict(<type 'int'>, {1: 1.0, 2: 1.0})
+[1, 2]
+new decision tree
+new decision tree
+new decision tree
+All same data no more branches for len 2
+new decision tree
+All same data no more branches for len 5
+new decision tree
+All same data no more branches for len 16
+new decision tree
+[1, 3, 4, 5]
+best attr1
+[3, 4, 5]
+devide data
+32
+1
+defaultdict(<type 'int'>, {1: 16.0, 2: 16.0})
+[1, 2]
+new decision tree
+[3, 4, 5]
+best attr5
+[3, 4]
+devide data
+16
+5
+defaultdict(<type 'int'>, {1: 4.0, 2: 4.0, 3: 4.0, 4: 4.0})
+[1, 2, 3, 4]
+new decision tree
+All same data no more branches for len 4
+new decision tree
+All same data no more branches for len 4
+new decision tree
+All same data no more branches for len 4
+new decision tree
+All same data no more branches for len 4
+new decision tree
+All same data no more branches for len 16
+new decision tree
+All same data no more branches for len 128
