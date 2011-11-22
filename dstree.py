@@ -7,6 +7,7 @@ attributes  = "auto stability error sing wind magnitude visibility"
 attrlist = attributes.split()
 targetname = "auto"
 decision_values = ("noauto auto").split()
+GAIN_RATIO = 0
 class dstree:
 	def __init__(self):
 		self.attrname = attributes.split()
@@ -18,11 +19,8 @@ class dstree:
 		self.attrindex = range(len(self.data[0]))
 		self.targetindex = attributes.index(targetname)
 		self.attrindex.remove(self.targetindex)
-		# check sanity for data 
-		#if (len(self.attrindex) != len(self.attrname)):
-		#	raise
-		print self.attrindex
-		print self.targetindex
+		#print self.attrindex
+		#print self.targetindex
 		#print self.data
 	def default_value(self):
 		attr_fre_map = defaultdict(int)
@@ -33,9 +31,9 @@ class dstree:
 				attr_freq_map[record[t]] = 1.0
 	@staticmethod
 	def divide_data(data,index):
-		print 'devide data'
-		print len(data)
-		print index
+		#print 'devide data'
+		#print len(data)
+		#print index
 		attr_freq_map = defaultdict(int)
 		new_data = {}
 		for record in data:
@@ -43,19 +41,24 @@ class dstree:
 					attr_freq_map[record[index]] += 1.0	
 			else:
 				attr_freq_map[record[index]] = 1.0
-		print attr_freq_map
+		#print attr_freq_map
 		for attr_val in attr_freq_map.keys():
 			new_data[attr_val]= [record for record in data if record[index]==attr_val]
 		return new_data	
-
+	@staticmethod
+	def	gain_ration(dcount,pcount):
+		dcount = dcount + 0.0 #floating point
+		return (-dcount/pcount)*math.log((dcount/pcount),2)		
+		
 	@staticmethod
 	def choose_best_attr(data,attr,target):
-		print attr
+		#print attr
 		attr_gain = []
 		#data entropy
 		f_entropy = dstree.entrory_calculate(data,target)
 		for t in attr: 
 			s_entropy = 0.0
+			s_iv = 0.0
 			attr_freq_map = defaultdict(int)
 			for record in data:
 				if(attr_freq_map.has_key(record[t])):
@@ -67,13 +70,18 @@ class dstree:
 				ratio = attr_freq_map[attr_val] / sum(attr_freq_map.values())
 				new_data = [record for record in data if record[t]==attr_val]
 				s_entropy += ratio*dstree.entrory_calculate(new_data,target)
-			attr_gain.append((f_entropy - s_entropy,	t))
+				s_iv   += dstree.gain_ration(len(new_data),len(data))			
+			if GAIN_RATIO ==0:
+				ig = f_entropy - s_entropy
+				attr_gain.append((ig,t))
+			else:
+				ig = (f_entropy - s_entropy)/s_iv
+				attr_gain.append((ig,t))
 		sort_gain = sorted(attr_gain,reverse=True)	
 		#print sort_gain
 		gain,best_attr = sort_gain[0]
-		print 'best attr' + str(best_attr)
+		#print 'best attr' + str(best_attr)
 		return best_attr
-		#print f_entropy
 	@staticmethod	
 	def entrory_calculate(data,target):
 		target_freq = {}
@@ -93,9 +101,6 @@ class dstree:
 		return entropy
 
 	@staticmethod	
-	def information_gain(attr_fre_map):			
-		pass
-	@staticmethod	
 	def create_decision_tree(data,attridx_list,targetidx):
 		# Algo is to branch on the best attribute
 		# recursive create branch for each value of the attribute 
@@ -103,22 +108,22 @@ class dstree:
 		# 	 test1 if all examples of same category
 		#	 test2 If not attrbute left to branch upon
 		# no data left
-		print 'new decision tree'
+		#print 'new decision tree'
 		if len(data) == 0 : 
-			print "No data or attribute left"
+			#print "No data left"
 			return treenode(None,None,None)
 		# same class all means entory 0.0		
 		elif (dstree.entrory_calculate(data,targetidx) == 0.0):
-			print 'All same data no more branches for len ',(len(data)),decision_values[data[0][targetidx]-1]
+			#print 'All same data no more branches for len ',(len(data)),decision_values[data[0][targetidx]-1]
 			return treenode(None,None,decision_values[data[0][targetidx]-1]) 
  		else:
 			best_attr_index =dstree.choose_best_attr(data,attridx_list,targetidx)
 			new_attr_list = deepcopy(attridx_list)
 			new_attr_list.remove(best_attr_index)
-			print new_attr_list
+			#print new_attr_list
 			tnode = treenode(best_attr_index,attrlist[best_attr_index])
 			new_data_map = dstree.divide_data(data,best_attr_index)
-			print new_data_map.keys()
+			#print new_data_map.keys()
 			for  att_value in new_data_map.keys():
 				childnode = dstree.create_decision_tree(new_data_map[att_value],new_attr_list,targetidx)
 				tnode.addchild(att_value, childnode)
@@ -139,7 +144,7 @@ class treenode:
 	def printtree(self,tab):
 		if(self.attrname == None and  self.attrindex == None):
 			if (self.decision != None):
-				print self.decision
+				print ' decide -', self.decision
 			return
 		print '\n'+' '*4*tab,'Atrribute ',self.attrname
 		#if( self.attrindex):
@@ -152,9 +157,16 @@ class treenode:
 
 '''start here Main'''
 if __name__ == "__main__":
-	print "Hello"	
 	dtobj = dstree()	
 	#dstree.choose_best_attr(dtobj.data,dtobj.attrindex,dtobj.targetindex)
+	#INFO GAIN
+	GAIN_RATIO = 0
 	tree = dstree.create_decision_tree(dtobj.data,dtobj.attrindex,dtobj.targetindex)
-	print "=======Decision tree======"
+	print "=======Decision tree with Information GAIN======"
 	tree.printtree(1)
+	# GAIN RATIO	
+	GAIN_RATIO = 1
+	tree = dstree.create_decision_tree(dtobj.data,dtobj.attrindex,dtobj.targetindex)
+	print "=======Decision tree with GAIN RATIO======"
+	tree.printtree(1)
+
