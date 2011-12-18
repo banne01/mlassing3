@@ -1,7 +1,7 @@
 import math
 
 def alphaweight(x):
-    alpha = -5*math.log(((1-x)/x))
+    alpha = -.5*math.log(((1-x)/x))
     return alpha
 
 def Identity(x,y): #check the inequality
@@ -91,7 +91,7 @@ class AdaBoost:
         return err_vect
    
     def run(self):
-        for t in range(3):#(self.rounds):
+        for t in range(1):#(self.rounds):
             #chhose best hypothesis
             err_vect = self.chooseBestH(t) # choose best H at time t 
             #append err
@@ -133,9 +133,9 @@ class AdaBoost:
         test_data = self.test_data[0] 
         f_vetor = []
         for  cl in range(self.classes):
-            for t in range(3):
+            for t in range(1):
                 val = self.alphaT[t][cl]*self.hypothesis(self.hT[t][cl][1])
-            f_vetor.append[val] 
+            f_vetor.append(val) 
         print "Actual",self.test_data[self.datalen]
         print "Feature",f_vetor     
 
