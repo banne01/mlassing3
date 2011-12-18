@@ -53,7 +53,7 @@ class AdaBoost:
         # we use a binary classfier to create 
         #Multiclass classifier
         # hypthosis is tre
-        # Hx = 2*x -1 and  1 - 2x
+        # Hx = 2*x -1 
         bestH = 0,0 # class and pixel 
         errmin = 1.0
         for hclass in range(self.classes): # all classes
@@ -61,7 +61,7 @@ class AdaBoost:
             for j in range(self.datalen): # all pixels
                 err = 0.0
                 for k in range(self.m): # all examples
-                    tclass = self.test_data[j][self.datalen] # True Class
+                    tclass = self.test_data[k][self.datalen] # True Class
                     # check the true class with hypothesis calss
                     # we are working on hclass now so idealy 
                     # check if hclass is true class
@@ -75,7 +75,7 @@ class AdaBoost:
                         y = 1
                     err = err + self.weightT[time][k]*Identity(predict,y)
                     #print "err",err
-                if (err < errmin):
+                if (err < errmin and err != 0.0):
                     bestH = hclass,j
                     errmin = err
         
@@ -85,7 +85,7 @@ class AdaBoost:
         return errmin
    
     def run(self):
-        for t in range(1):#(self.rounds):
+        for t in range(1000):#(self.rounds):
             #chhose best hypothesis
             err = self.chooseBestH(t) # choose best H at time t 
             #append err
@@ -94,14 +94,11 @@ class AdaBoost:
             alp = alphaweight(err)
             #append alpha
             self.alphaT.append(alp)
-            
-            
             wnew = [0.0]*self.m
             normalize = 0.0
-            
             # calculate new weights
             for l in range(self.m):
-                y = self.test_data[l][datalen]
+                y = self.test_data[l][self.datalen]
                 if(self.hT[t][0]==y):
                     wnew[l] = self.weightT[t][l]*.5*(1/err)
                 else:
@@ -112,6 +109,8 @@ class AdaBoost:
                 wnew[l] = wnew[l]/normalize
             #append
             self.weightT.append(wnew)
+
+            print len(self.weightT)
 
            
           
