@@ -1,6 +1,7 @@
 #include<iostream>
 #include<stdlib.h>
 #include<queue>
+
 using namespace std;
 
 struct Linklist{
@@ -153,9 +154,22 @@ return 0;
 
 
 void Levelorder(ListPtr root){
-
  
- 
+ queue<ListPtr> LQueue;
+ ListPtr tmp; 
+ if(!root)
+    return;
+ LQueue.push(root);
+ while(!LQueue.empty()){
+  tmp = LQueue.front()  ;
+  cout<<"\n \t"<<tmp->data;
+  LQueue.pop();
+  if(tmp->prev)
+    LQueue.push(tmp->prev); 
+  if(tmp->next)
+    LQueue.push(tmp->next);
+ }
+return;
 }
 
 
@@ -181,6 +195,8 @@ int main(){
 
  ListPtr root = ConvertListtoTree(Head);
  InorderTraversal(root);
+ Levelorder(root);
+
 }
 
 
