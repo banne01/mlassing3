@@ -1,6 +1,7 @@
 #include<iostream>
 #include<stdlib.h>
 #include<queue>
+#include<stack>
 
 using namespace std;
 
@@ -10,17 +11,6 @@ struct Linklist{
     int data;
 };
 typedef struct Linklist* ListPtr;
-
-/*template <typename LData>
-class DLList{
-     
-    private:
-    LData  data;   
-    public: 
-     DLLlist(){
-    }  
-
-};*/
 
 //#define for_each_list() 
 
@@ -184,6 +174,50 @@ return;
 }
 
 
+void BottomUp(ListPtr root){
+ 
+ queue<ListPtr> LQueue;
+ ListPtr tmp; 
+ if(!root)
+    return;
+ stack<ListPtr> Stack;
+ LQueue.push(root);
+ LQueue.push(NULL);
+ while(!LQueue.empty()){
+  tmp = LQueue.front() ;
+  if(tmp ==NULL){
+      LQueue.pop();
+      if(!LQueue.empty()){ 
+            LQueue.push(NULL);    
+            cout<<"\n";
+            Stack.push(tmp);
+            continue;
+      }  
+      else
+          break;
+  }
+  LQueue.pop();
+  Stack.push(tmp);
+  //cout<<"\t " <<tmp->data;
+  if(tmp->next) // right
+    LQueue.push(tmp->next);
+  if(tmp->prev) // left
+    LQueue.push(tmp->prev); 
+ }
+ while(!Stack.empty())
+ {
+   tmp = Stack.top();
+   if(tmp==NULL)
+       cout<<"\n";
+   else
+       cout<<"\t"<<tmp->data;
+   Stack.pop();  
+ }
+return;
+}
+
+
+
 int main(){
 
  ListPtr Head = NULL;
@@ -207,6 +241,7 @@ int main(){
  ListPtr root = ConvertListtoTree(Head);
  InorderTraversal(root);
  Levelorder(root);
+ BottomUp(root);
 
 }
 
