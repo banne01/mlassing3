@@ -132,6 +132,71 @@ ListPtr ConvertListtoTree(ListPtr Head){
 
 }
 
+//  Following does not work why ?
+//  Because Right is at the end of the list
+
+/*ListPtr _converTreeToList(ListPtr Root ){
+
+ if(!Root)
+     return NULL;
+
+ ListPtr Left = _converTreeToList(Root->prev); 
+  
+ ListPtr Right = _converTreeToList(Root->next);
+
+ if(Left)
+     Left->next = Root;
+ Root->prev = Left;
+ Root->next = Right;
+ if(Right){
+      Right->prev = Root;
+      return Right; 
+ }
+ return Root;
+}*/
+
+void _coverTreetoList(ListPtr root, ListPtr* predecssor){
+
+ if(!root)
+     return ;
+ if(root->prev)
+     _coverTreetoList(root->prev,predecssor);
+  if(*predecssor){
+      (*predecssor)->next = root;
+      root->prev = *predecssor;
+  }
+  *predecssor = root;
+  if(root->next)  
+    _coverTreetoList(root->next,predecssor);
+return;
+}
+
+
+
+ListPtr ConverTreeToList(ListPtr root ){
+
+  ListPtr list = NULL;
+  _coverTreetoList(root,&list);
+  while(list->prev)
+      list = list->prev;
+  return list;
+}
+
+void Listreverse(ListPtr* Head){
+
+ ListPtr p = *Head;
+ ListPtr r = NULL;
+   
+ while(p){
+ p->prev = p->next; 
+ p->next = r;
+ r = p;
+ p = p->prev;
+ }
+*Head = r;
+
+}
+
 int InorderTraversal(ListPtr root){
 
  if(!root)
@@ -240,9 +305,21 @@ int main(){
 
  ListPtr root = ConvertListtoTree(Head);
  InorderTraversal(root);
+ 
  Levelorder(root);
  BottomUp(root);
 
+ cout<<"\n Converting to List \n";
+
+ ListPtr nHead = ConverTreeToList(root);
+
+ ListPrint(nHead);
+ 
+ Listreverse(&nHead);
+
+ cout<<"\n Reverse the List \n";
+ 
+ ListPrint(nHead);
 }
 
 
