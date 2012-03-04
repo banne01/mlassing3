@@ -160,10 +160,21 @@ void Levelorder(ListPtr root){
  if(!root)
     return;
  LQueue.push(root);
+ LQueue.push(NULL);
  while(!LQueue.empty()){
-  tmp = LQueue.front()  ;
-  cout<<"\n \t"<<tmp->data;
+  tmp = LQueue.front() ;
+  if(tmp ==NULL){
+      LQueue.pop();
+      if(!LQueue.empty()){ 
+            LQueue.push(NULL);    
+            cout<<"\n";
+            continue;
+      }  
+      else
+          break;
+  }
   LQueue.pop();
+  cout<<"\t " <<tmp->data;
   if(tmp->prev)
     LQueue.push(tmp->prev); 
   if(tmp->next)
