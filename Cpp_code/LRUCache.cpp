@@ -2,6 +2,7 @@
 #include<map>
 #include<list>
 #include<string>
+#include<cstrings>
 
 #include<pthread.h>
 
