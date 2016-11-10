@@ -17,7 +17,7 @@ return 0;
 
 int main(){
 
-    char s[] = "  Nehal Kumar Bandi is Having a PArty  ";
+    char s[] = "   Having a PArty  ";
     char look[] = "PArty";
     char * f = strstr(s,look);
     if(f)
